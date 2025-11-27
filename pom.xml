@@ -1,92 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.example</groupId>
-  <artifactId>eventbridge-scheduler-app</artifactId>
-  <version>1.0-SNAPSHOT</version>
+    <!-- Inherit defaults from Spring Boot parent -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.7</version> <!-- Use a stable, recent version supporting Java 21 -->
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-  <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <aws.sdk.version>2.21.39</aws.sdk.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <groupId>io.softwarestrategies</groupId>
+    <artifactId>eventbridge-event-scheduler</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>eventbridge-event-scheduler</name>
+    <description>A command-line application for scheduling events.</description>
 
-  <dependencies>
-    <!-- AWS SDK v2 Core -->
-    <dependency>
-      <groupId>software.amazon.awssdk</groupId>
-      <artifactId>aws-sdk-java</artifactId>
-      <version>${aws.sdk.version}</version>
-      <scope>compile</scope>
-    </dependency>
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <aws.sdk.version>2.21.39</aws.sdk.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-    <!-- EventBridge Scheduler -->
-    <dependency>
-      <groupId>software.amazon.awssdk</groupId>
-      <artifactId>scheduler</artifactId>
-      <version>${aws.sdk.version}</version>
-    </dependency>
+    <dependencies>
 
-    <!-- AWS CloudWatch for logging (optional) -->
-    <dependency>
-      <groupId>software.amazon.awssdk</groupId>
-      <artifactId>cloudwatch</artifactId>
-      <version>${aws.sdk.version}</version>
-    </dependency>
+        <!-- Spring Boot Core for CLI applications -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
 
-    <!-- SLF4J API for logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.9</version>
-    </dependency>
+        <!-- AWS SDK v2 Core -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>aws-sdk-java</artifactId>
+            <version>${aws.sdk.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
-    <!-- SLF4J Simple binding for logging -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.9</version>
-      <scope>runtime</scope>
-    </dependency>
-  </dependencies>
+        <!-- EventBridge Scheduler -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>scheduler</artifactId>
+            <version>${aws.sdk.version}</version>
+        </dependency>
 
-  <build>
-    <plugins>
-      <!-- Maven Compiler Plugin -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
-        <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.target}</target>
-        </configuration>
-      </plugin>
+        <!-- AWS CloudWatch for logging (optional) -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>cloudwatch</artifactId>
+            <version>${aws.sdk.version}</version>
+        </dependency>
 
-      <!-- Maven Shade Plugin for creating an executable JAR with dependencies -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.5.1</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <transformers>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.example.EventSchedulerApp</mainClass>
-                </transformer>
-              </transformers>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+        <!-- Apache HTTP Client for AWS SDK -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>apache-client</artifactId>
+            <version>${aws.sdk.version}</version>
+        </dependency>
+
+        <!-- JSON Processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.18.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.18.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.42</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin for creating an executable JAR with dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.example.EventSchedulerApp</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
