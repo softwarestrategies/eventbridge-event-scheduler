@@ -1,5 +1,6 @@
-package io.softwarestrategies.eventscheduler.data;
+package io.softwarestrategies.eventscheduler.scheduler.data;
 
+import io.softwarestrategies.eventscheduler.common.data.dto.EventData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,10 +8,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class ScheduledEventWrapper {
 
+    String id;
     String source;
     String env;
     String topic;
-    EventData eventData;
+    EventData data;
     String dateCreated;
     int retryCount;
 }

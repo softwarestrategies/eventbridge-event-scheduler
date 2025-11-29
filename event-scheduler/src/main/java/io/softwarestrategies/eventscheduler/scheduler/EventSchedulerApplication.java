@@ -1,4 +1,4 @@
-package io.softwarestrategies.eventscheduler;
+package io.softwarestrategies.eventscheduler.scheduler;
 
 import java.time.temporal.ChronoUnit;
 
@@ -7,8 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import io.softwarestrategies.eventscheduler.data.ProcessOrderEvent;
-import io.softwarestrategies.eventscheduler.service.ScheduledEventService;
+import io.softwarestrategies.eventscheduler.common.data.dto.ProcessOrderEvent;
+import io.softwarestrategies.eventscheduler.scheduler.service.ScheduledEventService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

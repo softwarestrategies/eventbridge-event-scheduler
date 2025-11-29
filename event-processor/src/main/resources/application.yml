@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: event-consumer
+logging:
+  level:
+    io:
+      softwarestrategies: DEBUG

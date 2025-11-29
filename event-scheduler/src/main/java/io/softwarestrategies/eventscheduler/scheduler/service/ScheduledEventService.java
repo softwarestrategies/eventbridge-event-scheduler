@@ -1,10 +1,10 @@
-package io.softwarestrategies.eventscheduler.service;
+package io.softwarestrategies.eventscheduler.scheduler.service;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import io.softwarestrategies.eventscheduler.data.EventData;
-import io.softwarestrategies.eventscheduler.data.ScheduledEventWrapper;
+import io.softwarestrategies.eventscheduler.common.data.dto.EventData;
+import io.softwarestrategies.eventscheduler.scheduler.data.ScheduledEventWrapper;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
@@ -22,6 +22,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -59,8 +60,10 @@ public class ScheduledEventService {
         String eventScheduledTime = dateTimeFormatter.withZone(ZoneOffset.UTC)
                 .format(Instant.now().plus(eventDelayAmount, eventDelayUnits));
 
+		String id = UUID.randomUUID().toString();
+
         ScheduledEventWrapper scheduledEventWrapper
-				= new ScheduledEventWrapper(EVENT_SOURCE, ENV, topic, eventData, dateTimeCreated, 0);
+				= new ScheduledEventWrapper(id, EVENT_SOURCE, ENV, topic, eventData, dateTimeCreated, 0);
 
         scheduleEvent(scheduledEventWrapper, eventScheduledTime);
     }
